@@ -26,7 +26,7 @@ The plots for Convergence to the True Mean and MCMC Parameter Simulation for Poi
 knitr::include_graphics("implicit.png")
 ```
 
-**Interpretation:** This plot shows how the mean squared error (MSE) changes with the number of iterations of gradient descent. The parameters are optimized implicitly. We see that the test MSE does not decrease significantly after the 1230-th iteration. Thus, the earlt stopping criterion can be used to avoid wasting computational resources.
+**Interpretation:** This plot shows how the mean squared error (MSE) changes with the number of iterations of gradient descent. The parameters are optimized implicitly. We see that the test MSE does not decrease significantly after 1230 iterations. Thus, the early stopping criterion can be used to avoid wasting computational resources.
 
 # Convergence to the True Mean
 
@@ -34,7 +34,7 @@ knitr::include_graphics("implicit.png")
 knitr::include_graphics("binom.png")
 ```
 
-**Interpretation:** We sample data from the binomial distribution. With increasing number of sampled data points, the mean of the sampled data points converges to the true calculated mean of the binomial distribution. When $n = 1000$,  it is difficult to distinguish between the true mean and estimated mean.
+**Interpretation:** We sample data from the binomial distribution. With increasing number of sampled data points, the mean of the sampled data points converges to the true calculated mean of the binomial distribution. When $n = 1000$, it is already difficult to distinguish between the true and estimated means.
 
 # MCMC Parameter Simulation for Poisson Regression
 
