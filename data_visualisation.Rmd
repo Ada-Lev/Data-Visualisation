@@ -1,10 +1,20 @@
 ---
-title: "Data Visualisation"
-author: "Kristina Levina and Farid Musayev"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+title: DATA VISUALISATION
+date: Kristina Levina and Farid Musayev \hfill \small`r format(Sys.time(), '%d/%m/%Y')`
 output:
   pdf_document:
-    latex_engine: xelatex
+    fig_caption: yes        
+    includes:  
+      in_header: latex/my_header.tex # This disables figure floating
+    highlight: default
+header-includes:
+  - \usepackage{xcolor} # Define background color of code chunks
+  - \usepackage[most]{tcolorbox} # Set highlighted box for inline code
+  - \usepackage{DejaVuSerif} # Change general font
+  - \usepackage{newtxmath} # Change the greek letters
+  - \usepackage[slantedGreek, helvet]{sfmath} # Change font for formulas
+  - \usepackage{DejaVuSansMono} # Change font of code
+  - \usepackage[T1]{fontenc}
 ---
 
 ```{r setup, include=FALSE}
@@ -149,40 +159,56 @@ df <- data.frame(theta_10 = beta_posterior(n = 10),
 # n = 10
 pl1 <- ggplot(df) +
   geom_histogram(aes(x = theta_10, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_10), color = "estimated"), size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), size = 1) +
-  scale_color_manual(name = "mean", values = c(estimated = "red", true = "blue")) +
+                 fill = "lightgrey", bins = 100, 
+                 color = "black", alpha = 0.2) +
+  geom_vline(aes(xintercept = mean(theta_10), color = "estimated"), 
+             size = 1) +
+  geom_vline(aes(xintercept = expected_value, color = "true"), 
+             size = 1) +
+  scale_color_manual(name = "mean", 
+                     values = c(estimated = "red", true = "blue")) +
   labs(title = "n = 10", x = "\u03B8", y = "p(\u03B8 | y)") +
   theme_minimal() + theme(legend.position = "none")
 
 # n = 100
 pl2 <- ggplot(df) +
   geom_histogram(aes(x = theta_100, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_100), color = "estimated"), size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), size = 1) +
-  scale_color_manual(name = "mean", values = c(estimated = "red", true = "blue")) +
+                 fill = "lightgrey", bins = 100, 
+                 color = "black", alpha = 0.2) +
+  geom_vline(aes(xintercept = mean(theta_100), color = "estimated"), 
+             size = 1) +
+  geom_vline(aes(xintercept = expected_value, color = "true"), 
+             size = 1) +
+  scale_color_manual(name = "mean", 
+                     values = c(estimated = "red", true = "blue")) +
   labs(title = "n = 100", x = "\u03B8", y = "p(\u03B8 | y)") +
   theme_minimal() + theme(legend.position = "none")
 
 # n = 1000
 pl3 <- ggplot(df) +
   geom_histogram(aes(x = theta_1000, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_1000), color = "estimated"), size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), size = 1) +
-  scale_color_manual(name = "mean", values = c(estimated = "red", true = "blue")) +
+                 fill = "lightgrey", bins = 100, 
+                 color = "black", alpha = 0.2) +
+  geom_vline(aes(xintercept = mean(theta_1000), color = "estimated"), 
+             size = 1) +
+  geom_vline(aes(xintercept = expected_value, color = "true"), 
+             size = 1) +
+  scale_color_manual(name = "mean", 
+                     values = c(estimated = "red", true = "blue")) +
   labs(title = "n = 1000", x = "\u03B8", y = "p(\u03B8 | y)") +
   theme_minimal() + theme(legend.position = "none")
 
 # n = 10000
 pl4 <- ggplot(df) +
   geom_histogram(aes(x = theta_10000, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_10000), color = "estimated"), size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), size = 1) +
-  scale_color_manual(name = "mean", values = c(estimated = "red", true = "blue")) +
+                 fill = "lightgrey", bins = 100, 
+                 color = "black", alpha = 0.2) +
+  geom_vline(aes(xintercept = mean(theta_10000), color = "estimated"), 
+             size = 1) +
+  geom_vline(aes(xintercept = expected_value, color = "true"), 
+             size = 1) +
+  scale_color_manual(name = "mean", 
+                     values = c(estimated = "red", true = "blue")) +
   labs(title = "n = 10000", x = "\u03B8", y = "p(\u03B8 | y)") +
   theme_minimal()
 
@@ -196,7 +222,8 @@ g_legend<-function(a.gplot){
 
 shared_legend <- g_legend(pl4)
 
-grid.arrange(arrangeGrob(pl1, pl2, pl3, pl4 + theme(legend.position = "none"), ncol = 2),
+grid.arrange(arrangeGrob(pl1, pl2, pl3, pl4 + theme(legend.position = "none"), 
+                         ncol = 2),
              top = textGrob("Posterior ~ Beta(\u03B1 = 18, \u03B2 = 42)",
                             gp = gpar(fontsize = 18, fontface = "bold")),
              shared_legend,
@@ -233,7 +260,7 @@ logPost <- function(betas, mean, Sigma, X, y){
   # unknown parameters in regression are betas. 
   # This is why we write prior for them
   linPred <- X %*% betas
-  logLik <- sum(linPred * y - exp(linPred)) #LogLikelihood for the Poisson Model
+  logLik <- sum(linPred * y - exp(linPred)) #LogLik for the Poisson Model
   return(logPrior + logLik)
 }
 
@@ -263,7 +290,8 @@ random_walk_metropolis <- function(logPost, c = 1){
   theta[1, ] <- rep(0, 9)
   accept_rate <- 1
   for (i in 2:N){
-    proposed <- as.vector(rmvnorm(1, mean = theta[i-1, ], sigma=c*post_cov_mat))
+    proposed <- as.vector(rmvnorm(1, mean = theta[i-1, ], 
+                                  sigma=c*post_cov_mat))
     post_prev <-logPost(betas = theta[i-1, ], mean, Sigma, X, y)
     post_new <- logPost(betas = proposed, mean, Sigma, X, y)
     accept_pr <- min(1, exp(post_new - post_prev))
@@ -293,8 +321,10 @@ plot <- ggplot(df_plot, aes(x = x)) +
   geom_line(aes(y = Logbook, color = "3"), size = 1) +
   geom_line(aes(y = MinBidShare, color = "4"), size = 1) +
   xlab("Iteration #") + ylab("Parameter Value") + 
-  scale_color_manual(values = c("royalblue", "orange", "darkgreen", "darkgray"),
-                     labels = c("VerifyId", "Sealed", "LogBook", "MinBidShare"),
+  scale_color_manual(values = c("royalblue", "orange", 
+                                "darkgreen", "darkgray"),
+                     labels = c("VerifyId", "Sealed", 
+                                "LogBook", "MinBidShare"),
                      name = "Features") +
   theme(title = element_text(size = 12, face = 'bold'),
         axis.title = element_text(size = 10, face = "plain"))
@@ -328,7 +358,9 @@ f <- function(n, fun, funName){
     
     #data to insert into optim
     data <- data.frame(x = c(lowestPoint, middlePoint, largestPoint), 
-                       y = c(fun(lowestPoint), fun(middlePoint), fun(largestPoint)))
+                       y = c(fun(lowestPoint), 
+                             fun(middlePoint), 
+                             fun(largestPoint)))
     #print(data)
     optimized <- optim(fn = squaredError, par = c(0, 0, 0), data = data, 
                        method = "BFGS") #The TA said to use BFGS
@@ -346,7 +378,7 @@ f <- function(n, fun, funName){
   plot <- ggplot(dfPlot, aes(x = x)) + 
     theme_bw() + 
     stat_function(fun = fun, aes(color = "1"), n = 1000, size = 1.2) +
-    stat_function(fun = function(x) dfPlot$a0 + dfPlot$a1 * x + dfPlot$a2 * x^2, 
+    stat_function(fun = function(x) dfPlot$a0 + dfPlot$a1*x + dfPlot$a2*x^2, 
                   aes(color = "2"), n = 1000,
                   size = 1.2,
                   linetype = "dashed") +
