@@ -13,7 +13,7 @@ dejavu_layer <- list(
     text = element_text(family = "Bitter",
                         face = "bold",
                         size = 14),
-    title = element_text(size = 15),
+    title = element_text(size = 18),
     legend.text = element_text(size = 14),
     axis.text = element_text(size = 13,
                              family = "DejaVuSans",
