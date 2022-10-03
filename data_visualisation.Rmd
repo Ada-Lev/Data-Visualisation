@@ -18,6 +18,22 @@ header-includes:
   - \usepackage{svg}
 ---
 
+<!-- background of code chunks-->
+\definecolor{shadecolor}{RGB}{240, 240, 240}
+<!-- background of inline-code chunks -->
+\definecolor{inline_code_color}{RGB}{230, 230, 230}
+
+<!-- # Set highlighted box for inline code -->
+\tcbset{on line, 
+        boxsep = 3pt, left = 0pt, right = 0pt, top = 0pt, bottom = 0pt,
+        colframe = white, colback = inline_code_color,
+        highlight math style = {enhanced},
+        grow to right by = 3pt,
+        grow to left by = 3pt,
+        enlarge top by = -3pt,
+        enlarge bottom by = -3pt
+        }
+
 ```{r setup, include = F}
 knitr::opts_chunk$set(echo = F, message = F, warning = F, fig.align='center', out.width="70%")
 
@@ -67,7 +83,7 @@ knitr::include_graphics("parabolic.png")
 
 ## Code for implicit regularisation
 
-```{r eval = F}
+```{r eval = F, echo = T}
 set.seed(12345) 
 
 ## ggplot2 common theme
