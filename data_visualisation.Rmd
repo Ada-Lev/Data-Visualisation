@@ -40,6 +40,7 @@ knitr::opts_chunk$set(echo = F, message = F, warning = F, fig.align='center', ou
 library(ggplot2)
 library(gridExtra)
 library(grid)
+library(mvtnorm)
 
 ```
 
@@ -179,11 +180,8 @@ n = 50
 f = n - s
 alpha_0 = 5
 beta_0 = 5
-
 # Beta Posterior distribution
-beta_posterior <- function(n, s = 13, f = 37){
-  alpha_0 = 5
-  beta_0 = 5
+beta_posterior <- function(n){
   rbeta(n = n, shape1 = alpha_0 + s, shape2 = beta_0 + f)
 }
 
@@ -200,63 +198,51 @@ df <- data.frame(theta_10 = beta_posterior(n = 10),
                  theta_1000 = beta_posterior(n = 1000),
                  theta_10000 = beta_posterior(n = 10000))
 
+
+## ggplot2 common theme
+dejavu_layer <- list(
+  theme_minimal(),
+  theme(
+    text = element_text(family = "Bitter",
+                        face = "bold",
+                        size = 13),
+    title = element_text(size = 13),
+    legend.text = element_text(size = 13),
+    axis.text = element_text(size = 12,
+                             family = "DejaVuSans",
+                             face = "plain"),
+    axis.title = element_text(size = 13,
+                              face = "plain")
+  )
+)
+
 # Plots for different n values 
 
-# n = 10
-pl1 <- ggplot(df) +
-  geom_histogram(aes(x = theta_10, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, 
-                 color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_10), color = "estimated"), 
-             size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), 
-             size = 1) +
-  scale_color_manual(name = "mean", 
-                     values = c(estimated = "red", true = "blue")) +
-  labs(title = "n = 10", x = "\u03B8", y = "p(\u03B8 | y)") +
-  theme_minimal() + theme(legend.position = "none")
+plot_fun <- function(col_name, title){
+  pl <- ggplot(df) +
+    dejavu_layer +
+    geom_histogram(aes_string(x = col_name, y = "..density.."),
+                   fill = "white",
+                   bins = 100,
+                   color = "darkgrey",
+                   alpha = 0.3) +
+    geom_vline(aes(xintercept = mean(df[[col_name]]), color = "Estim."),
+               size = 1.5) +
+    geom_vline(aes(xintercept = expected_value, color = "True"),
+               size = 1.5) +
+    scale_color_manual(name = "Mean",
+                       values = c(Estim. = "orange", True = "blue")) +
+    labs(title = title,
+         x = "\u03B8",
+         y = "p(\u03B8 | y)")
 
-# n = 100
-pl2 <- ggplot(df) +
-  geom_histogram(aes(x = theta_100, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, 
-                 color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_100), color = "estimated"), 
-             size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), 
-             size = 1) +
-  scale_color_manual(name = "mean", 
-                     values = c(estimated = "red", true = "blue")) +
-  labs(title = "n = 100", x = "\u03B8", y = "p(\u03B8 | y)") +
-  theme_minimal() + theme(legend.position = "none")
+  return(pl)
+}
 
-# n = 1000
-pl3 <- ggplot(df) +
-  geom_histogram(aes(x = theta_1000, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, 
-                 color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_1000), color = "estimated"), 
-             size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), 
-             size = 1) +
-  scale_color_manual(name = "mean", 
-                     values = c(estimated = "red", true = "blue")) +
-  labs(title = "n = 1000", x = "\u03B8", y = "p(\u03B8 | y)") +
-  theme_minimal() + theme(legend.position = "none")
-
-# n = 10000
-pl4 <- ggplot(df) +
-  geom_histogram(aes(x = theta_10000, y = ..density.., ), 
-                 fill = "lightgrey", bins = 100, 
-                 color = "black", alpha = 0.2) +
-  geom_vline(aes(xintercept = mean(theta_10000), color = "estimated"), 
-             size = 1) +
-  geom_vline(aes(xintercept = expected_value, color = "true"), 
-             size = 1) +
-  scale_color_manual(name = "mean", 
-                     values = c(estimated = "red", true = "blue")) +
-  labs(title = "n = 10000", x = "\u03B8", y = "p(\u03B8 | y)") +
-  theme_minimal()
+pl1 <- plot_fun("theta_10", "n = 10")
+pl2 <- plot_fun("theta_100", "n = 100")
+pl3 <- plot_fun("theta_1000", "n = 1000")
+pl4 <- plot_fun("theta_10000", "n = 10000")
 
 # Extract the legend
 g_legend<-function(a.gplot){
@@ -268,13 +254,18 @@ g_legend<-function(a.gplot){
 
 shared_legend <- g_legend(pl4)
 
-grid.arrange(arrangeGrob(pl1, pl2, pl3, pl4 + theme(legend.position = "none"), 
-                         ncol = 2),
+g <- grid.arrange(arrangeGrob(pl1 + theme(legend.position = "none"),
+                              pl2 + theme(legend.position = "none"),
+                              pl3 + theme(legend.position = "none"),
+                              pl4 + theme(legend.position = "none"),
+                              ncol = 2),
              top = textGrob("Posterior ~ Beta(\u03B1 = 18, \u03B2 = 42)",
                             gp = gpar(fontsize = 18, fontface = "bold")),
              shared_legend,
              heights = c(10, 0),
              widths = c(8.5, 1.5))
+
+#ggsave("binom.png", g, dpi = 400)
 ```
 
 ## Code for MCMC parameter simulation for Poisson regression
