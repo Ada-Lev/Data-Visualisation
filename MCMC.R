@@ -115,7 +115,7 @@ plot <- ggplot(df_plot, aes(x = x)) +
   geom_line(aes(y = Sealed, color = "2"), size = 1) +
   geom_line(aes(y = Logbook, color = "3"), size = 1) +
   geom_line(aes(y = MinBidShare, color = "4"), size = 1) +
-  xlab("# Iteration") + ylab("Parameter Value") +
+  xlab("Iteration #") + ylab("Parameter Value") +
   scale_color_manual(values = c("royalblue", "orange", "darkgreen", "darkgray"),
                      labels = c("#1", "#2", "#3", "#4"),
                      name = "Features")
