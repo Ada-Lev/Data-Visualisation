@@ -1,5 +1,5 @@
 ---
-title: DATA VISUALISATION
+title: SCIENTIFIC VISUALISATION
 date: Kristina Levina and Farid Musayev \hfill \small`r format(Sys.time(), '%d/%m/%Y')`
 output:
   pdf_document:
@@ -51,7 +51,7 @@ The plots for Convergence to the True Mean and MCMC Parameter Simulation for Poi
 # Implicit Regularisation
 
 ```{r}
-knitr::include_graphics("implicit.png")
+knitr::include_graphics("plots/implicit.png")
 ```
 
 **Interpretation:** This plot shows how the mean squared error (MSE) changes with the number of iterations of gradient descent. The parameters are optimized implicitly. We see that the test MSE does not decrease significantly after 1230 iterations. Thus, the early stopping criterion can be used to avoid wasting computational resources.
@@ -59,7 +59,7 @@ knitr::include_graphics("implicit.png")
 # Convergence to the True Mean
 
 ```{r out.width="90%"}
-knitr::include_graphics("binom.png")
+knitr::include_graphics("plots/binom.png")
 ```
 
 **Interpretation:** We sample data from the binomial distribution. With increasing number of sampled data points, the mean of the sampled data points converges to the true calculated mean of the binomial distribution. When $n = 1000$, it is already difficult to distinguish between the true and estimated means.
@@ -67,7 +67,7 @@ knitr::include_graphics("binom.png")
 # MCMC Parameter Simulation for Poisson Regression
 
 ```{r}
-knitr::include_graphics("MCMC.png")
+knitr::include_graphics("plots/MCMC.png")
 ```
 
 **Interpretation:** We use the Metropolis Hastings algorithm to simulate the parameters of Poisson Regression. The plot above demonstrates how four parameters corresponding to four features converge after about 250 iterations.
@@ -75,7 +75,7 @@ knitr::include_graphics("MCMC.png")
 # Parabolic Approximation
 
 ```{r}
-knitr::include_graphics("parabolic.png")
+knitr::include_graphics("plots/parabolic.png")
 ```
 
 **Interpretation:** In the plot above, one can observe how good is parabolic approximation using the gradient descent algorithm. The black line shows the real function, and the dashed cyan line shows the approximated values.
